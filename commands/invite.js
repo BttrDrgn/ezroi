@@ -9,7 +9,6 @@ module.exports =
 	{
 		let package = JSON.parse(fs.readFileSync("./package.json"));
 		let github = package.repository.url.slice(4, package.repository.url.length - 4);
-		console.log(github);
 
 		let embed = new MessageEmbed()
 			.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
