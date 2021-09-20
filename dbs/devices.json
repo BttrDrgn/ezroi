@@ -1,1 +1,69 @@
-{"devices":[["3090","ff9715b2-78b2-4903-9962-2c03a7d4118b","NVIDIA RTX 3090"],["rx570","009ee085-bbad-456d-a9f9-a75bb75f1f8a","AMD RX 570 8GB"],["rx580","1946e0fa-f67c-41f1-8812-2bb30469b7e5","AMD RX 580 8GB"],["rx590","38201ad7-3966-49e1-9642-2efcdcfb93e9","AMD RX 590 8GB"],["vega64","314747b5-018f-4f71-a4c4-4be214d9e0ff","AMD RX Vega 64"]]}
+{
+    "devices": [
+        [
+            "1660",
+            "1741f9cd-1ce1-4fa0-9157-dfaedb90d191",
+            "NVIDIA GTX 1660"
+        ],
+        [
+            "1660s",
+            "94404838-ef17-4a6b-a97b-d8deb83f26e0",
+            "NVIDIA GTX 1660 Super"
+        ],
+        [
+            "1660ti",
+            "182c129a-9432-471e-9ed6-bfedac26ae47",
+            "NVIDIA GTX 1660 Ti"
+        ],
+        [
+            "3060",
+            "3cd8829c-c420-4e6a-b1d3-030cea712433",
+            "NVIDIA RTX 3060"
+        ],
+        [
+            "3060ti",
+            "a16e5f4e-1665-486a-bd5a-450b15a9a563",
+            "NVIDIA RTX 3060 Ti"
+        ],
+        [
+            "3060ti-lhr",
+            "443cc946-0283-48f1-936e-fc26ffa13b77",
+            "NVIDIA RTX 3060 Ti LHR"
+        ],
+        [
+            "3080-lhr",
+            "80492f0b-d8d5-4909-b69b-1d1f2364af0b",
+            "NVIDIA RTX 3080 LHR"
+        ],
+        [
+            "3080ti",
+            "9b902b12-2de0-4eca-a7a4-373ae4cdeb90",
+            "NVIDIA RTX 3080 Ti"
+        ],
+        [
+            "3090",
+            "ff9715b2-78b2-4903-9962-2c03a7d4118b",
+            "NVIDIA RTX 3090"
+        ],
+        [
+            "rx570",
+            "009ee085-bbad-456d-a9f9-a75bb75f1f8a",
+            "AMD RX 570 8GB"
+        ],
+        [
+            "rx580",
+            "1946e0fa-f67c-41f1-8812-2bb30469b7e5",
+            "AMD RX 580 8GB"
+        ],
+        [
+            "rx590",
+            "38201ad7-3966-49e1-9642-2efcdcfb93e9",
+            "AMD RX 590 8GB"
+        ],
+        [
+            "vega64",
+            "314747b5-018f-4f71-a4c4-4be214d9e0ff",
+            "AMD RX Vega 64"
+        ]
+    ]
+}
