@@ -1,7 +1,5 @@
-const fs = require('fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require("discord.js");
-const { inviteUrl } = require("../config.json");
 
 module.exports =
 {
