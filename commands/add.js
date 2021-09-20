@@ -21,6 +21,14 @@ module.exports =
 			console.log("./dbs/devices.json has been written with init data");
 		}
 
+		let op_json = JSON.parse(fs.readFileSync("./dbs/ops.json"));
+
+		if(!op_json.ops.includes(interaction.member.user.id))
+		{
+			interaction.reply({content: `You do not have permission to use this command!`, ephemeral: true});
+			return;
+		}
+
 		https.get(endpoint, (res) => 
 		{
 			let body = "";
@@ -38,7 +46,7 @@ module.exports =
 
 					if(temp.hasOwnProperty("errors"))
 					{
-						interaction.reply(`Device ID does not exist on Nicehash!`);
+						interaction.reply({content: `Device ID does not exist on Nicehash!`, ephemeral: true});
 						return;
 					}
 					else
@@ -49,7 +57,7 @@ module.exports =
 						{
 							if(json.devices[i][0] == codename)
 							{
-								interaction.reply(`Device already exists in the list!`);
+								interaction.reply({content: `Device already exists in the list!`, ephemeral: true});
 								return;
 							}
 						}

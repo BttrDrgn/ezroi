@@ -7,9 +7,17 @@ module.exports =
 	{
 		let codename = interaction.options.getString("codename");
 
+		let op_json = JSON.parse(fs.readFileSync("./dbs/ops.json"));
+
+		if(!op_json.ops.includes(interaction.member.user.id))
+		{
+			interaction.reply({content: `You do not have permission to use this command!`, ephemeral: true});
+			return;
+		}
+
 		if(!fs.existsSync("./dbs/devices.json"))
 		{
-			await interaction.reply(`Devices database doesn't exist!`);
+			interaction.reply({content: `Devices database doesn't exist!`, ephemeral: true});
 			return;
 		}
 
@@ -33,7 +41,7 @@ module.exports =
 		}
 		else
 		{
-			await interaction.reply(`\`${codename}\` is not included in the devices list!`);
+			interaction.reply({content: `\`${codename}\` is not included in the devices list!`, ephemeral: true});
 		}
 
 	},
