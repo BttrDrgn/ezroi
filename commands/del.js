@@ -36,7 +36,7 @@ module.exports =
 		{
 			json.devices.splice(index, 1);
 			json.devices.sort();
-			fs.writeFileSync("./dbs/devices.json", JSON.stringify(json));
+			fs.writeFileSync("./dbs/devices.json", JSON.stringify(json, null, 4));
 			await interaction.reply(`\`${codename}\` has been deleted from the list!`);
 		}
 		else

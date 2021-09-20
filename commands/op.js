@@ -34,7 +34,7 @@ module.exports =
 
 		json.ops.push(id);
 
-		fs.writeFileSync("./dbs/ops.json", JSON.stringify(json));
+		fs.writeFileSync("./dbs/ops.json", JSON.stringify(json, null, 4));
 
 		interaction.reply(`\`${id}\` has been added to the list!`);
 		return;

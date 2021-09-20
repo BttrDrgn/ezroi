@@ -68,7 +68,7 @@ module.exports =
 						json.devices.push(array);
 						json.devices.sort();
 
-						fs.writeFileSync("./dbs/devices.json", JSON.stringify(json));
+						fs.writeFileSync("./dbs/devices.json", JSON.stringify(json, null, 4));
 
 						interaction.reply(`Added \`[${codename}, ${deviceId}, ${name}]\` to the device list!`);
 						return;
