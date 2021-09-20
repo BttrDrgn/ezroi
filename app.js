@@ -26,7 +26,8 @@ for (const file of commandFiles)
 
 client.once('ready', () =>
 {
-	client.user.setActivity('everyone mine!', { type: 'WATCHING' });
+	let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
+	client.user.setActivity(`with ${json.devices.length} GPUs`, { type: 'PLAYING' });
 	console.log('Ready!');
 });
 
