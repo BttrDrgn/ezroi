@@ -12,11 +12,6 @@ if(staging)
 {
 	for (const file of commandFiles)
 	{
-		if(file == "op.json")
-		{
-			continue;
-		}
-		
 		const command = require(`./commands/${file}`);
 		commands.push(command.data.toJSON());
 	}
@@ -25,6 +20,11 @@ else
 {
 	for (const file of commandFiles)
 	{
+		if(file == "op.js")
+		{
+			continue;
+		}
+		
 		const command = require(`./commands/${file}`);
 		commands.push(command.data.toJSON());
 	}
@@ -42,6 +42,8 @@ const rest = new REST({ version: '9' }).setToken(token);
 				Routes.applicationGuildCommands(clientId, guildId),
 				{ body: commands },
 			);
+			
+			console.log('Successfully registered staging commands.');
 		}
 		else
 		{
@@ -49,9 +51,9 @@ const rest = new REST({ version: '9' }).setToken(token);
 				Routes.applicationCommands(clientId),
 				{ body: commands },
 			);
+			
+			console.log('Successfully registered global commands.');
 		}
-
-		console.log('Successfully registered application commands.');
 	}
 	catch (error)
 	{
