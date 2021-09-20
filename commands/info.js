@@ -96,6 +96,7 @@ module.exports =
                             .setDescription(`Device Info for ${json.devices[index][2]}`)
                             .addField("Hashrates", speeds_, true)
                             .addField("Power", `${temp.power}w`, true)
+							.setFooter("Powered by Nicehash!")
 							.setColor(color);
 
                         interaction.reply({ embeds: [embed], ephemeral: true});
