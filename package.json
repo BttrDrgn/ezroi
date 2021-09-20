@@ -1,0 +1,24 @@
+{
+  "name": "ezroi",
+  "version": "1.0.0",
+  "description": "A Discord bot for determining rate of returns with Nicehash data",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BttrDrgn/ezroi.git"
+  },
+  "author": "",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/BttrDrgn/ezroi/issues"
+  },
+  "homepage": "https://github.com/BttrDrgn/ezroi#readme",
+  "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.22.0",
+    "discord.js": "^13.1.0"
+  }
+}
