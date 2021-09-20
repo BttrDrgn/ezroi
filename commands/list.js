@@ -11,13 +11,20 @@ module.exports =
 
 		for(let i = 0; i < json.devices.length; i++)
 		{
+			if(i == 11)
+			{
+				continue;
+			}
+
 			list += `${json.devices[i][2]} [${json.devices[i][0]}]\n`;
-		}
+		}	
 
 		let embed = new MessageEmbed()
 			.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
 			.setDescription("Device List")
-			.addField("Device [Codename]", list, true);
+			.addField("Device [Codename]", list, true)
+			.addField("Full List", `Click [here](https://www.google.com/) for the full list of devices.`)
+			.setFooter("This list is manually updated and may not include every device available!");
 
 		await interaction.reply({ embeds: [embed], ephemeral: true});
 	},
