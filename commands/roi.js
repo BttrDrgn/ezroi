@@ -8,7 +8,8 @@ module.exports =
 	async execute(interaction)
 	{
         let codename = interaction.options.getString("codename");
-        let price = interaction.options.getInteger("price");
+        let price = parseFloat(interaction.options.getString("price")).toFixed(2);
+        let currency = interaction.options.getString("currency");
         let private = interaction.options.getBoolean("private");
 
         //Checks in case something gets through the discord slash command parser
@@ -16,6 +17,11 @@ module.exports =
         {
             await interaction.reply({ content: "The price that was entered is invalid!", ephemeral: true});
             return; 
+        }
+
+        if(currency == null)
+        {
+            currency = "USD";
         }
 
         let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
@@ -40,7 +46,6 @@ module.exports =
         }
 
         let endpoint = "https://api2.nicehash.com/main/api/v2/public/profcalc/device?device=" + json.devices[index][1];
-
         let btc = -1;
 
         https.get("https://api.coinbase.com/v2/exchange-rates?currency=BTC", (res) => 
@@ -57,7 +62,13 @@ module.exports =
 				try
 				{
 					let temp = JSON.parse(body);
-                    btc = parseFloat(temp.data.rates.USDT).toFixed(2);
+                    btc = parseFloat(temp.data.rates[currency.toUpperCase()]).toFixed(2);
+
+                    if(isNaN(btc))
+                    {
+                        currency = "USD";
+                        btc = parseFloat(temp.data.rates[currency.toUpperCase()]).toFixed(2);
+                    }
 
                     https.get(endpoint, (res) => 
                     {
@@ -101,10 +112,10 @@ module.exports =
                                     let embed = new MessageEmbed()
                                         .setAuthor("EzROI", interaction.client.user.displayAvatarURL())
                                         .setDescription(`ROI calculations for ${json.devices[index][2]}`)
-                                        .addField("Price", `$${price}`, true)
-                                        .addField("Profit Per 24h", `$${paying}`, true)
+                                        .addField("Price", `${price} ${currency.toUpperCase()}`, true)
+                                        .addField("Profit Per 24h", `${paying} ${currency.toUpperCase()}`, true)
                                         .addField("Current ROI", `${roi} days`, false)
-                                        .setFooter(`Calculated with BTC price as $${btc}`)
+                                        .setFooter(`Calculated with BTC price as ${btc} ${currency.toUpperCase()}`)
                                         .setColor(color);
 
                                     if(private)
@@ -139,10 +150,15 @@ module.exports =
 			.setDescription("Codename of the device to be used in the calculations.")
 			.setRequired(true)
 		)
-        .addIntegerOption(
+        .addStringOption(
 			option => option.setName("price")
 			.setDescription("The price (in USD) that was spent on the device.")
 			.setRequired(true)
+		)
+        .addStringOption(
+			option => option.setName("currency")
+			.setDescription("The currency to be calculated with (default is USD)")
+			.setRequired(false)
 		)
         .addBooleanOption(
 			option => option.setName("private")
