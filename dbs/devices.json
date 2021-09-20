@@ -1,6 +1,26 @@
 {
     "devices": [
         [
+            "1070",
+            "5c76b698-a2d9-445c-aad4-38964dd35421",
+            "NVIDIA GTX 1070"
+        ],
+        [
+            "1070ti",
+            "9282809e-94ae-4cb3-a8db-8941d98f3d09",
+            "NVIDIA GTX 1070 Ti"
+        ],
+        [
+            "1080",
+            "f0893a52-2ec5-4c03-bf3c-2d00695c6873",
+            "NVIDIA GTX 1080"
+        ],
+        [
+            "1080ti",
+            "6e88ab8b-7081-4170-84b5-a36686ec98fe",
+            "NVIDIA GTX 1080 Ti"
+        ],
+        [
             "1660",
             "1741f9cd-1ce1-4fa0-9157-dfaedb90d191",
             "NVIDIA GTX 1660"
@@ -46,9 +66,34 @@
             "NVIDIA RTX 3090"
         ],
         [
+            "rx470",
+            "e1276e68-567d-4fa6-b73f-cc4b5045dce2",
+            "AMD RX 470 8GB"
+        ],
+        [
+            "rx480",
+            "58fa802b-460d-48be-be6e-2bb3824136f2",
+            "AMD RX 480 8GB"
+        ],
+        [
+            "rx5500xt",
+            "2ce7e7f5-462f-44a1-8473-2ba6abd87179",
+            "AMD RX 5500 XT 8GB "
+        ],
+        [
+            "rx5600xt",
+            "dfc236e2-a519-490b-8f61-4e44ea25df26",
+            "AMD RX 5600 XT 6GB "
+        ],
+        [
             "rx570",
             "009ee085-bbad-456d-a9f9-a75bb75f1f8a",
             "AMD RX 570 8GB"
+        ],
+        [
+            "rx5700xt",
+            "c5fafd85-6376-4aa6-b69d-40938f9c03de",
+            "AMD RX 5700 XT 8GB"
         ],
         [
             "rx580",
@@ -59,6 +104,31 @@
             "rx590",
             "38201ad7-3966-49e1-9642-2efcdcfb93e9",
             "AMD RX 590 8GB"
+        ],
+        [
+            "rx6600xt",
+            "587bc66e-9083-4927-85d2-254066a3a6e9",
+            "AMD RX 6600 XT 8GB"
+        ],
+        [
+            "rx6700xt",
+            "49e4d36b-5c60-46e3-8304-8fa84f1a52d3",
+            "AMD RX 6700 XT 12GB"
+        ],
+        [
+            "rx6800",
+            "b826bbb2-4ad2-43bd-9848-591555ed9dda",
+            "AMD RX 6800 16GB"
+        ],
+        [
+            "rx6800xt",
+            "e3291b83-2924-4e9b-afc5-5a4d8491fb4e",
+            "AMD RX 6800 XT 16GB"
+        ],
+        [
+            "rx6900xt",
+            "df20ca29-fb19-4e00-b232-faa3d9d1e479",
+            "AMD RX 6900 XT 16GB"
         ],
         [
             "vega64",
