@@ -22,7 +22,7 @@ module.exports =
 			\u2022 Suggest GPUs to purchase`
 			, true)
 
-		await interaction.reply({ embeds: [embed], ephemeral: false});
+		await interaction.reply({ embeds: [embed], ephemeral: true});
 	},
 
 	data: new SlashCommandBuilder()
