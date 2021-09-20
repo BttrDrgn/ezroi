@@ -4,7 +4,7 @@
   "description": "A Discord bot for determining rate of returns with Nicehash data",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "node deploy.js"
   },
   "repository": {
     "type": "git",
