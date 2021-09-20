@@ -4,29 +4,33 @@ const { Routes } = require('discord-api-types/v9');
 const { clientId, guildId, token } = require('./config.json');
 
 let staging = process.argv.includes("--staging");
+let reset = process.argv.includes("--reset");
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-if(staging)
+if(!reset)
 {
-	for (const file of commandFiles)
+	if(staging)
 	{
-		const command = require(`./commands/${file}`);
-		commands.push(command.data.toJSON());
-	}
-}
-else
-{
-	for (const file of commandFiles)
-	{
-		if(file == "op.js")
+		for (const file of commandFiles)
 		{
-			continue;
+			const command = require(`./commands/${file}`);
+			commands.push(command.data.toJSON());
 		}
-		
-		const command = require(`./commands/${file}`);
-		commands.push(command.data.toJSON());
+	}
+	else
+	{
+		for (const file of commandFiles)
+		{
+			if(file == "op.js")
+			{
+				continue;
+			}
+			
+			const command = require(`./commands/${file}`);
+			commands.push(command.data.toJSON());
+		}
 	}
 }
 
@@ -36,23 +40,40 @@ const rest = new REST({ version: '9' }).setToken(token);
 {
 	try
 	{
-		if(staging)
+		if(!reset)
+		{
+			if(staging)
+			{
+				await rest.put(
+					Routes.applicationGuildCommands(clientId, guildId),
+					{ body: commands },
+				);
+				
+				console.log('Successfully registered staging commands.');
+			}
+			else
+			{
+				await rest.put(
+					Routes.applicationCommands(clientId),
+					{ body: commands },
+				);
+				
+				console.log('Successfully registered global commands.');
+			}
+		}
+		else
 		{
 			await rest.put(
 				Routes.applicationGuildCommands(clientId, guildId),
 				{ body: commands },
 			);
-			
-			console.log('Successfully registered staging commands.');
-		}
-		else
-		{
+
 			await rest.put(
 				Routes.applicationCommands(clientId),
 				{ body: commands },
 			);
-			
-			console.log('Successfully registered global commands.');
+
+			console.log('Successfully reset all commands.');
 		}
 	}
 	catch (error)

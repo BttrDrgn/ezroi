@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "deploy": "node deploy.js",
-    "deploy-staging": "node deploy.js --staging"
+    "deploy-staging": "node deploy.js --staging",
+	"reset": "node deploy.js --reset"
   },
   "repository": {
     "type": "git",
