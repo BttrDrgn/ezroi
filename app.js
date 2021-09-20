@@ -1,8 +1,19 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./config.json');
-
+const { token, topggtoken} = require('./config.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const AutoPoster = require("topgg-autoposter").AutoPoster;
+const topgg = AutoPoster(topggtoken, client);
+
+topgg.on("posted", (stats) =>
+{
+	console.log(`Stats posted to Top.gg: ${stats.serverCount} servers`);
+});
+
+topgg.on("error", (error) =>
+{
+	console.error(error.message);
+});
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
