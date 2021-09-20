@@ -57,19 +57,46 @@ module.exports =
                         let speeds = JSON.parse(temp.speeds);
                         let speeds_ = "";
 
+						let count = 0;
+						let algos = ["daggerhashimoto", "x16r", "beam", "x16rv2", "kawpow", "octopus", "autolykos"];
                         for(let entry in speeds)
                         {
                             if(speeds[entry] >= 1.0)
                             {
-                                speeds_ += `${entry}: ${speeds[entry]}\n`;
-                            }
+								let _ = Object.keys(speeds)[count].toLocaleLowerCase();
+
+								for(let algo in algos)
+								{
+									if(_ == algos[algo])
+									{
+										speeds_ += `${entry}: ${speeds[entry]} MH/s \n`;
+									}
+								}
+
+							}
+							count++;
                         }
+
+						let color = "";
+						if(json.devices[index][2].includes("AMD"))
+						{
+							color = "#ED1C24";
+						}
+						else if(json.devices[index][2].includes("NVIDIA"))
+						{
+							color = "#76B900";
+						}
+						else
+						{
+							color = "#F2A900";
+						}
 
                         let embed = new MessageEmbed()
                             .setAuthor("EzROI", interaction.client.user.displayAvatarURL())
                             .setDescription(`Device Info for ${json.devices[index][2]}`)
                             .addField("Hashrates", speeds_, true)
-                            .addField("Power", `${temp.power}w`, true);
+                            .addField("Power", `${temp.power}w`, true)
+							.setColor(color);
 
                         interaction.reply({ embeds: [embed], ephemeral: true});
 					}
