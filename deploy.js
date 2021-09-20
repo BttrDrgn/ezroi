@@ -11,26 +11,23 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 if(!reset)
 {
-	if(staging)
+	let staging_blacklist = ["op.js"];
+
+	for (const file of commandFiles)
 	{
-		for (const file of commandFiles)
+		if(staging)
 		{
-			const command = require(`./commands/${file}`);
-			commands.push(command.data.toJSON());
-		}
-	}
-	else
-	{
-		for (const file of commandFiles)
-		{
-			if(file == "op.js")
+			for(let i in staging_blacklist)
 			{
-				continue;
+				if(file == staging_blacklist[i])
+				{
+					comtinue;
+				}
 			}
-			
-			const command = require(`./commands/${file}`);
-			commands.push(command.data.toJSON());
 		}
+
+		const command = require(`./commands/${file}`);
+		commands.push(command.data.toJSON());
 	}
 }
 
