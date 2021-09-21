@@ -8,6 +8,7 @@ module.exports =
 	async execute(interaction)
 	{
         let codename = interaction.options.getString("codename");
+		let private = !interaction.options.getBoolean("private");
 
 		let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
 
@@ -99,7 +100,13 @@ module.exports =
 							.setFooter("Powered by Nicehash!")
 							.setColor(color);
 
-                        interaction.reply({ embeds: [embed], ephemeral: true});
+						if(!private)
+						{
+							interaction.reply({ embeds: [embed], ephemeral: true});
+							return;
+						}
+
+						interaction.reply({ embeds: [embed], ephemeral: false});
 					}
 				}
 				catch (error)
@@ -117,5 +124,10 @@ module.exports =
 			option => option.setName("codename")
 			.setDescription("Codename of the device to be enumerated.")
 			.setRequired(true)
+		)
+		.addBooleanOption(
+			option => option.setName("private")
+			.setDescription("Whether or not this information will be private (only you can see it). Default is true.")
+			.setRequired(false)
 		)
 };
