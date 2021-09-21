@@ -6,7 +6,7 @@
   "scripts": {
     "deploy": "node deploy.js",
     "deploy-staging": "node deploy.js --staging",
-	"reset": "node deploy.js --reset"
+    "reset": "node deploy.js --reset"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "@discordjs/rest": "^0.1.0-canary.0",
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
+    "public-ip": "^4.0.4",
     "topgg-autoposter": "^2.0.0"
   }
 }

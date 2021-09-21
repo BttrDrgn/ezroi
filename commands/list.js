@@ -1,6 +1,8 @@
 const fs = require('fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require("discord.js");
+const publicip = require('public-ip');
+const { port} = require('../config.json');
 
 module.exports =
 {
@@ -26,14 +28,16 @@ module.exports =
 
 			//Going to limit the list to 30 due to character concerns
 			if(i == 30) break;
-		}	
+		}
 
+		let ipv4 = await publicip.v4();
+		ipv4 += `:${port}`;
 		let embed = new MessageEmbed()
 			.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
 			.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
 			.addField("Device", device_names, true)
 			.addField("Codename", codenames, true)
-			.addField("Full List", `Click [here](https://www.google.com/) for the full list of devices in JSON format.`)
+			.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
 			.setFooter("This list is manually updated and may not include every device available!");
 
 		await interaction.reply({ embeds: [embed], ephemeral: true});

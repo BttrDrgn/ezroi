@@ -1,9 +1,10 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token, topggtoken} = require('./config.json');
+const { token, topggtoken, port} = require('./config.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const AutoPoster = require("topgg-autoposter").AutoPoster;
 const topgg = AutoPoster(topggtoken, client);
+const http = require('http');
 
 topgg.on("posted", (stats) =>
 {
@@ -66,3 +67,13 @@ client.on('interactionCreate', async interaction =>
 });
 
 client.login(token);
+
+http.createServer((req, res) =>
+{
+	if(req.method == "GET")
+	{
+		res.writeHead(200, {'Content-Type': 'application/json'});
+		res.write(fs.readFileSync("./dbs/devices.json"));
+ 	 	res.end();
+	}
+}).listen(port);
