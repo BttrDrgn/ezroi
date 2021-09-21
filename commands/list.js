@@ -12,8 +12,17 @@ module.exports =
 
 		for(let i = 0; i < json.devices.length; i++)
 		{
-			device_names += `${json.devices[i][2]}\n`;
-			codenames += `${json.devices[i][0]}\n`;
+			if((i - 4) % 5 == 0)
+			{
+				device_names += `${json.devices[i][2]}\n\n`;
+				codenames += `${json.devices[i][0]}\n\n`;
+			}
+			else
+			{
+				device_names += `${json.devices[i][2]}\n`;
+				codenames += `${json.devices[i][0]}\n`;
+			}
+			
 
 			//Going to limit the list to 30 due to character concerns
 			if(i == 30) break;
@@ -21,7 +30,7 @@ module.exports =
 
 		let embed = new MessageEmbed()
 			.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
-			.setDescription("Device List")
+			.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
 			.addField("Device", device_names, true)
 			.addField("Codename", codenames, true)
 			.addField("Full List", `Click [here](https://www.google.com/) for the full list of devices in JSON format.`)
