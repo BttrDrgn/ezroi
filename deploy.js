@@ -11,17 +11,17 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 if(!reset)
 {
-	let staging_blacklist = ["op.js"];
+	let prod_blacklist = ["op.js"];
 
 	for (const file of commandFiles)
 	{
-		if(staging)
+		if(!staging)
 		{
-			for(let i in staging_blacklist)
+			for(let i in prod_blacklist)
 			{
-				if(file == staging_blacklist[i])
+				if(file == prod_blacklist[i])
 				{
-					comtinue;
+					continue;
 				}
 			}
 		}
