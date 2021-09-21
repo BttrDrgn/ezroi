@@ -21,6 +21,11 @@
             "NVIDIA GTX 1080 Ti"
         ],
         [
+            "1650s",
+            "0ee318a2-f911-45e9-b8cd-b7d2587b7799",
+            "NVIDIA GTX 1650 SUPER"
+        ],
+        [
             "1660",
             "1741f9cd-1ce1-4fa0-9157-dfaedb90d191",
             "NVIDIA GTX 1660"
@@ -64,6 +69,11 @@
             "3090",
             "ff9715b2-78b2-4903-9962-2c03a7d4118b",
             "NVIDIA RTX 3090"
+        ],
+        [
+            "r9390",
+            "0ec47199-5cbb-42ec-a33a-c4fbc178c2db",
+            "AMD R9 390"
         ],
         [
             "rx470",
@@ -129,6 +139,11 @@
             "rx6900xt",
             "df20ca29-fb19-4e00-b232-faa3d9d1e479",
             "AMD RX 6900 XT 16GB"
+        ],
+        [
+            "titanx",
+            "5f508d00-bcf0-4480-82ac-dd828ea13b6c",
+            "NVIDIA TITAN X"
         ],
         [
             "vega64",
