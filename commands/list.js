@@ -8,26 +8,58 @@ module.exports =
 {
 	async execute(interaction)
 	{
+		let brand = interaction.options.getString("brand").toLocaleUpperCase();
+
+		if(brand != "AMD" && brand != "NVIDIA")
+		{
+			await interaction.reply({ content: `The brand you entered does not exist!`, ephemeral: true});
+		}
+
 		let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
 		let device_names = "";
 		let codenames = "";
 
-		for(let i = 0; i < json.devices.length; i++)
+		if(brand == null)
 		{
-			if((i - 4) % 5 == 0)
+			for(let i = 0; i < json.devices.length; i++)
 			{
-				device_names += `${json.devices[i][2]}\n\n`;
-				codenames += `${json.devices[i][0]}\n\n`;
-			}
-			else
-			{
-				device_names += `${json.devices[i][2]}\n`;
-				codenames += `${json.devices[i][0]}\n`;
-			}
-			
+				if((i - 4) % 5 == 0)
+				{
+					device_names += `${json.devices[i][2]}\n\n`;
+					codenames += `${json.devices[i][0]}\n\n`;
+				}
+				else
+				{
+					device_names += `${json.devices[i][2]}\n`;
+					codenames += `${json.devices[i][0]}\n`;
+				}
+				
 
-			//Going to limit the list to 30 due to character concerns
-			if(i == 29) break;
+				//Going to limit the list to 30 due to character concerns
+				if(i == 29) break;
+			}
+		}
+		else
+		{
+			for(let i = 0; i < json.devices.length; i++)
+			{
+				if(!json.devices[i][2].includes(brand)) break;
+
+				if((i - 4) % 5 == 0)
+				{
+					device_names += `${json.devices[i][2]}\n\n`;
+					codenames += `${json.devices[i][0]}\n\n`;
+				}
+				else
+				{
+					device_names += `${json.devices[i][2]}\n`;
+					codenames += `${json.devices[i][0]}\n`;
+				}
+				
+
+				//Going to limit the list to 30 due to character concerns
+				if(i == 29) break;
+			}
 		}
 
 		let ipv4 = await publicip.v4();
@@ -46,4 +78,9 @@ module.exports =
 	data: new SlashCommandBuilder()
 		.setName('list')
 		.setDescription('Lists all devices available for lookup.')
+		.addStringOption(
+			option => option.setName("brand")
+			.setDescription("Sort by brand rather than full list (AMD / NVIDIA).")
+			.setRequired(false)
+		)
 };
