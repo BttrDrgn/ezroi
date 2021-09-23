@@ -1,66 +1,139 @@
 const fs = require('fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const publicip = require('public-ip');
 const { port} = require('../config.json');
+
+async function enumerate_device_names(brand)
+{
+	let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
+	let device_names = "";
+	let count = 0;
+
+	for(let i = 0; i < json.devices.length; i++)
+	{
+		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
+
+		if((i - 4) % 5 == 0)
+		{
+			device_names += `${json.devices[i][2]}\n\n`;
+			count++;
+		}
+		else
+		{
+			device_names += `${json.devices[i][2]}\n`;
+			count++;
+		}
+		
+
+		//Going to limit the list to 30 due to character concerns
+		if(count == 30) break;
+	}
+
+	return device_names;
+}
+
+async function enumerate_codenames(brand)
+{
+	let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
+	let codenames = "";
+	let count = 0;
+
+	for(let i = 0; i < json.devices.length; i++)
+	{
+		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
+
+		if((i - 4) % 5 == 0)
+		{
+			codenames += `${json.devices[i][0]}\n\n`;
+			count++;
+		}
+		else
+		{
+			codenames += `${json.devices[i][0]}\n`;
+			count++;
+		}
+		
+
+		//Going to limit the list to 30 due to character concerns
+		if(count == 30) break;
+	}
+
+	return codenames;
+}
 
 module.exports =
 {
 	async execute(interaction)
 	{
-		let brand = interaction.options.getString("brand").toLocaleUpperCase();
+		let brand;
 
-		if(brand != "AMD" && brand != "NVIDIA")
+		if(interaction.options.getString("brand") != null)
 		{
-			await interaction.reply({ content: `The brand you entered does not exist!`, ephemeral: true});
-		}
+			brand = interaction.options.getString("brand").toLocaleLowerCase();
 
-		let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
-		let device_names = "";
-		let codenames = "";
-
-		if(brand == null)
-		{
-			for(let i = 0; i < json.devices.length; i++)
+			if(brand != "amd" && brand != "nvidia")
 			{
-				if((i - 4) % 5 == 0)
-				{
-					device_names += `${json.devices[i][2]}\n\n`;
-					codenames += `${json.devices[i][0]}\n\n`;
-				}
-				else
-				{
-					device_names += `${json.devices[i][2]}\n`;
-					codenames += `${json.devices[i][0]}\n`;
-				}
-				
-
-				//Going to limit the list to 30 due to character concerns
-				if(i == 29) break;
+				await interaction.reply({ content: `The brand you entered does not exist!`, ephemeral: true});
 			}
 		}
 		else
 		{
-			for(let i = 0; i < json.devices.length; i++)
+			const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('amd')
+					.setLabel('AMD')
+					.setStyle('DANGER'),
+			).addComponents(
+				new MessageButton()
+					.setCustomId('nvidia')
+					.setLabel('NVIDIA')
+					.setStyle('SUCCESS'),
+			);
+
+
+			let ipv4 = await publicip.v4();
+			ipv4 += `:${port}`;
+			let embed = new MessageEmbed()
+				.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
+				.setDescription("Device List\n")
+				.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
+				.setFooter("This list is manually updated and may not include every device available!");
+
+			const filter = i => i.customId === 'amd' || 'nvidia';
+			const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+
+			collector.on('collect', async (i) =>
 			{
-				if(!json.devices[i][2].includes(brand)) break;
+				let device_names = await enumerate_device_names(i.customId);
+				let codenames = await enumerate_codenames(i.customId);
 
-				if((i - 4) % 5 == 0)
-				{
-					device_names += `${json.devices[i][2]}\n\n`;
-					codenames += `${json.devices[i][0]}\n\n`;
-				}
-				else
-				{
-					device_names += `${json.devices[i][2]}\n`;
-					codenames += `${json.devices[i][0]}\n`;
-				}
-				
+				let ipv4 = await publicip.v4();
+				ipv4 += `:${port}`;
+				let embed = new MessageEmbed()
+					.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
+					.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
+					.addField("Device", device_names, true)
+					.addField("Codename", codenames, true)
+					.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
+					.setFooter("This list is manually updated and may not include every device available!");
+				await i.update({ embeds: [embed], ephemeral: false});
+			});
 
-				//Going to limit the list to 30 due to character concerns
-				if(i == 29) break;
-			}
+			collector.on('end', (collected) =>
+			{
+				console.log(`Collected ${collected.size} items`);
+			});
+
+			await interaction.reply({ embeds: [embed], components: [row], ephemeral: true});
+			return;
 		}
+
+		//Below is for non-button method
+
+		let device_names = await enumerate_device_names(brand);
+		let codenames = await enumerate_codenames(brand);
 
 		let ipv4 = await publicip.v4();
 		ipv4 += `:${port}`;
