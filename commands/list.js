@@ -27,7 +27,7 @@ module.exports =
 			
 
 			//Going to limit the list to 30 due to character concerns
-			if(i == 30) break;
+			if(i == 29) break;
 		}
 
 		let ipv4 = await publicip.v4();
