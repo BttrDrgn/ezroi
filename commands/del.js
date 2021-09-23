@@ -5,7 +5,7 @@ module.exports =
 {
 	async execute(interaction)
 	{
-		let codename = interaction.options.getString("codename");
+		let codename = interaction.options.getString("codename").toLocaleLowerCase();
 
 		let op_json = JSON.parse(fs.readFileSync("./dbs/ops.json"));
 

@@ -13,7 +13,7 @@ module.exports =
 {
 	async execute(interaction)
 	{
-        let codename = interaction.options.getString("codename");
+        let codename = interaction.options.getString("codename").toLocaleLowerCase();
         let price = parseFloat(interaction.options.getString("price")).toFixed(2);
         let currency = interaction.options.getString("currency");
         let private = interaction.options.getBoolean("private");

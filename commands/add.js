@@ -6,7 +6,7 @@ module.exports =
 {
 	async execute(interaction)
 	{
-		let codename = interaction.options.getString("codename");
+		let codename = interaction.options.getString("codename").toLocaleLowerCase();
 		let deviceId = interaction.options.getString("device-id");
 		let endpoint = "https://api2.nicehash.com/main/api/v2/public/profcalc/device?device=" + deviceId;
 
