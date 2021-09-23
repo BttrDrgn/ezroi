@@ -34,35 +34,37 @@ client.once('ready', () =>
 
 client.on('interactionCreate', async interaction =>
 {
-	if (!interaction.isCommand()) return;
+	if (!interaction.isCommand() && !interaction.isButton()) return;
 
-	const command = client.commands.get(interaction.commandName.toLocaleLowerCase());
-
-	if (!command)
+	if(interaction.isCommand())
 	{
-		await interaction.reply(
-			{
-				content: 'No such command registered!',
-				ephemeral: true
-			}
-		);
+		const command = client.commands.get(interaction.commandName.toLocaleLowerCase());
 
-		return;
-	}
+		if (!command)
+		{
+			await interaction.reply(
+				{
+					content: 'No such command registered!',
+					ephemeral: true
+				}
+			);
 
-	try
-    {
-		await command.execute(interaction);
-	}
-    catch (error)
-    {
-		console.error(error);
-		await interaction.reply(
-            {
-                content: 'There was an error while executing this command!',
-                ephemeral: true
-            }
-        );
+			return;
+		}
+		try
+		{
+			await command.execute(interaction);
+		}
+		catch (error)
+		{
+			console.error(error);
+			await interaction.reply(
+				{
+					content: 'There was an error while executing this command!',
+					ephemeral: true
+				}
+			);
+		}
 	}
 });
 
