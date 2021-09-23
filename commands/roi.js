@@ -3,6 +3,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require("discord.js");
 const https = require('https'); 
 
+//temp fix
+async function do_reply(interaction, embed, ephe)
+{
+    await interaction.reply({ embeds: [embed], ephemeral: ephe});
+}
+
 module.exports =
 {
 	async execute(interaction)
@@ -117,14 +123,17 @@ module.exports =
                                         .addField("Current ROI", `${roi} days`, false)
                                         .setFooter(`Calculated with BTC price as ${btc} ${currency.toUpperCase()}`)
                                         .setColor(color);
-
+                                    
                                     if(private)
                                     {
-                                        interaction.reply({ embeds: [embed], ephemeral: true});
-                                        return;
+                                        do_reply(interaction, embed, true);
                                     }
-                            
-                                    interaction.reply({ embeds: [embed], ephemeral: false});
+                                    else
+                                    {
+                                        do_reply(interaction, embed, false);
+                                    }
+
+                                    return;
                                 }
                             }
                             catch (error)
