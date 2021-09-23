@@ -14,7 +14,7 @@ async function enumerate_device_names(brand)
 	{
 		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
 
-		if((i - 4) % 5 == 0)
+		if((count - 4) % 5 == 0)
 		{
 			device_names += `${json.devices[i][2]}\n\n`;
 			count++;
@@ -43,7 +43,7 @@ async function enumerate_codenames(brand)
 	{
 		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
 
-		if((i - 4) % 5 == 0)
+		if((count - 4) % 5 == 0)
 		{
 			codenames += `${json.devices[i][0]}\n\n`;
 			count++;
@@ -68,6 +68,10 @@ module.exports =
 	{
 		let brand;
 
+		//let ipv4 = await publicip.v4();
+		let ipv4 = `0.0.0.0`;
+		ipv4 += `:${port}`;
+
 		if(interaction.options.getString("brand") != null)
 		{
 			brand = interaction.options.getString("brand").toLocaleLowerCase();
@@ -79,7 +83,7 @@ module.exports =
 		}
 		else
 		{
-			const row = new MessageActionRow()
+			const first_row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
 					.setCustomId('amd')
@@ -90,14 +94,16 @@ module.exports =
 					.setCustomId('nvidia')
 					.setLabel('NVIDIA')
 					.setStyle('SUCCESS'),
+			).addComponents(
+				new MessageButton()
+					.setURL(`http://${ipv4}`)
+					.setLabel('FULL LIST')
+					.setStyle('LINK'),
 			);
 
-
-			let ipv4 = await publicip.v4();
-			ipv4 += `:${port}`;
 			let embed = new MessageEmbed()
 				.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
-				.setDescription("Device List\n")
+				.setDescription("Device List\n**PLEASE CLICK A BRAND BELOW**")
 				.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
 				.setFooter("This list is manually updated and may not include every device available!");
 
@@ -109,8 +115,6 @@ module.exports =
 				let device_names = await enumerate_device_names(i.customId);
 				let codenames = await enumerate_codenames(i.customId);
 
-				let ipv4 = await publicip.v4();
-				ipv4 += `:${port}`;
 				let embed = new MessageEmbed()
 					.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
 					.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
@@ -118,15 +122,14 @@ module.exports =
 					.addField("Codename", codenames, true)
 					.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
 					.setFooter("This list is manually updated and may not include every device available!");
-				await i.update({ embeds: [embed], ephemeral: false});
+				await i.deferUpdate();
+				await i.editReply({ embeds: [embed], component: [first_row], ephemeral: true});
+				return;
 			});
 
-			collector.on('end', (collected) =>
-			{
-				console.log(`Collected ${collected.size} items`);
-			});
+			collector.on('end', (collected) => {});
 
-			await interaction.reply({ embeds: [embed], components: [row], ephemeral: true});
+			await interaction.reply({ embeds: [embed], components: [first_row], ephemeral: true});
 			return;
 		}
 
@@ -135,8 +138,6 @@ module.exports =
 		let device_names = await enumerate_device_names(brand);
 		let codenames = await enumerate_codenames(brand);
 
-		let ipv4 = await publicip.v4();
-		ipv4 += `:${port}`;
 		let embed = new MessageEmbed()
 			.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
 			.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
