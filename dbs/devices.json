@@ -1,6 +1,11 @@
 {
     "devices": [
         [
+            "1060",
+            "869da26b-6e22-4819-8996-a19acfb9ec0d",
+            "NVIDIA GTX 1060 6GB"
+        ],
+        [
             "1070",
             "5c76b698-a2d9-445c-aad4-38964dd35421",
             "NVIDIA GTX 1070"
@@ -41,6 +46,41 @@
             "NVIDIA GTX 1660 Ti"
         ],
         [
+            "2060",
+            "7b1e338c-d881-4afb-83d3-c91819ecae80",
+            "NVIDIA RTX 2060"
+        ],
+        [
+            "2060s",
+            "91775e3-2665-4a61-8e96-93102ee8228d",
+            "NVIDIA RTX 2060 Super"
+        ],
+        [
+            "2070",
+            "2a3857bc-a0ac-4e16-9ad4-33469ac1d54b",
+            "NVIDIA RTX 2070"
+        ],
+        [
+            "2070s",
+            "7ca5c855-b3a1-44e1-836b-eaf80916e766",
+            "NVIDIA RTX 2070 Super"
+        ],
+        [
+            "2080",
+            "ff4c7c32-433d-4e00-8db9-809ee6bd6386",
+            "NVIDIA RTX 2080"
+        ],
+        [
+            "2080s",
+            "f213e671-7b69-468f-8e05-5a2fa4553c45",
+            "NVIDIA RTX 2080 Super"
+        ],
+        [
+            "2080ti",
+            "eeb685a7-f5be-451b-849c-debb3c4cebd1",
+            "NVIDIA RTX 2080 Ti"
+        ],
+        [
             "3060",
             "3cd8829c-c420-4e6a-b1d3-030cea712433",
             "NVIDIA RTX 3060"
@@ -56,6 +96,26 @@
             "NVIDIA RTX 3060 Ti LHR"
         ],
         [
+            "3070",
+            "4e33d395-5c8a-4fb9-98c2-8af1f12bce2a",
+            "NVIDIA RTX 3070"
+        ],
+        [
+            "3070-lhr",
+            "49640e23-3b63-46f2-8fa3-ad2d567007f9",
+            "NVIDIA RTX 3070"
+        ],
+        [
+            "3070ti",
+            "16f0110e-2dd7-4f80-adf2-d1dbf6d33df0",
+            "NVIDIA RTX 3070 Ti"
+        ],
+        [
+            "3080",
+            "1821b5f3-581f-4d0a-9ae1-8db2e2f758e6",
+            "NVIDIA RTX 3080"
+        ],
+        [
             "3080-lhr",
             "80492f0b-d8d5-4909-b69b-1d1f2364af0b",
             "NVIDIA RTX 3080 LHR"
@@ -69,6 +129,16 @@
             "3090",
             "ff9715b2-78b2-4903-9962-2c03a7d4118b",
             "NVIDIA RTX 3090"
+        ],
+        [
+            "980",
+            "5cea1bca-f348-4246-b77d-17758d60ae88",
+            "NVIDIA GTX 980"
+        ],
+        [
+            "980ti",
+            "c4db66ae-6f84-4a22-965e-98c002a96f93",
+            "NVIDIA GTX 980 Ti"
         ],
         [
             "r9390",
