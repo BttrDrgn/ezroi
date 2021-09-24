@@ -26,6 +26,11 @@
             "NVIDIA GTX 1080 Ti"
         ],
         [
+            "1650",
+            "855d79d9-c360-4895-b0ba-1c9c1a0231e0",
+            "NVIDIA GTX 1650"
+        ],
+        [
             "1650s",
             "0ee318a2-f911-45e9-b8cd-b7d2587b7799",
             "NVIDIA GTX 1650 SUPER"
@@ -141,6 +146,36 @@
             "NVIDIA GTX 980 Ti"
         ],
         [
+            "a40",
+            "7a31b4c5-f629-48bc-8d37-c7547e6c5784",
+            "NVIDIA A40"
+        ],
+        [
+            "cmp30hx",
+            "b3e04234-a196-4bca-be40-a6354e002b97",
+            "NVIDIA CMP 30HX"
+        ],
+        [
+            "cmp40hx",
+            "87a18939-58ce-459f-beb4-194271746eb1",
+            "NVIDIA CMP 40HX"
+        ],
+        [
+            "cmp50hx",
+            "9fb4d35f-fed2-4ef6-91d6-ba9f10d7d95f",
+            "NVIDIA CMP 50HX"
+        ],
+        [
+            "cmp90hx",
+            "0a0c424b-e042-4ff2-b243-53e9437e6d25",
+            "NVIDIA CMP 90HX"
+        ],
+        [
+            "l3+",
+            "fb3095b0-990d-4114-bd6b-844019959679",
+            "BITMAIN AntMiner L3+"
+        ],
+        [
             "r9390",
             "0ec47199-5cbb-42ec-a33a-c4fbc178c2db",
             "AMD R9 390"
@@ -211,9 +246,39 @@
             "AMD RX 6900 XT 16GB"
         ],
         [
+            "telsap40",
+            "95dc68a7-1f96-4dab-80b9-718116002d97",
+            "NVIDIA Tesla P40"
+        ],
+        [
+            "teslaa100",
+            "1d2e2e15-0bad-4559-87bd-00f22597ef6c",
+            "NVIDIA Tesla A100"
+        ],
+        [
+            "teslat4",
+            "66643f60-0e1c-4828-b3d1-7b2c8d732755",
+            "NVIDIA Tesla T4"
+        ],
+        [
+            "titanrtx",
+            "a2443258-1327-4080-818d-ccb6cbca0e1f",
+            "NVIDIA TITAN RTX "
+        ],
+        [
+            "titanv",
+            "93bd5502-85b8-40f3-9ac0-98893b4deb13",
+            "NVIDIA TITAN V"
+        ],
+        [
             "titanx",
             "5f508d00-bcf0-4480-82ac-dd828ea13b6c",
             "NVIDIA TITAN X"
+        ],
+        [
+            "titanxp",
+            "41f10416-60f5-4e97-904f-48caf2b6b727",
+            "NVIDIA TITAN XP"
         ],
         [
             "vega64",
