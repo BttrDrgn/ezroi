@@ -37,7 +37,7 @@ module.exports =
 			json.devices.splice(index, 1);
 			json.devices.sort();
 			fs.writeFileSync("./dbs/devices.json", JSON.stringify(json, null, 4));
-			interaction.client.user.setActivity(`with ${json.devices.length} GPUs`, { type: 'PLAYING' });
+			interaction.client.user.setActivity(`with ${json.devices.length} devices`, { type: 'PLAYING' });
 			await interaction.reply(`\`${codename}\` has been deleted from the list!`);
 		}
 		else

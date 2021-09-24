@@ -69,7 +69,7 @@ module.exports =
 						json.devices.sort();
 
 						fs.writeFileSync("./dbs/devices.json", JSON.stringify(json, null, 4));
-						interaction.client.user.setActivity(`with ${json.devices.length} GPUs`, { type: 'PLAYING' });
+						interaction.client.user.setActivity(`with ${json.devices.length} devices`, { type: 'PLAYING' });
 						interaction.reply(`Added \`[${codename}, ${deviceId}, ${name}]\` to the device list!`);
 						return;
 					}
