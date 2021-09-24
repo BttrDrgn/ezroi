@@ -16,7 +16,6 @@ module.exports =
 			, true)
 			.addField("What It **CAN NOT** Do", 
 			`\u2022 Display graphs for crypto charts
-			\u2022 Crypto or fiat conversions on demand
 			\u2022 Suggest GPUs to purchase`
 			, true)
 
