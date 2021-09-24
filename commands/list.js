@@ -7,8 +7,9 @@ const wait = require('util').promisify(setTimeout);
 
 async function enumerate_page_count(brand)
 {
+	let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
 	let count = 0;
-	for(let i = 30*page; i < json.devices.length; i++)
+	for(let i = 0; i < json.devices.length; i++)
 	{
 		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
 		count++;
@@ -46,13 +47,13 @@ async function enumerate_device_names(brand, page)
 	return device_names;
 }
 
-async function enumerate_codenames(brand)
+async function enumerate_codenames(brand, page)
 {
 	let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
 	let codenames = "";
 	let count = 0;
 
-	for(let i = 0; i < json.devices.length; i++)
+	for(let i = 30*page; i < json.devices.length; i++)
 	{
 		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
 
@@ -75,120 +76,81 @@ async function enumerate_codenames(brand)
 	return codenames;
 }
 
+let ipv4 = `0.0.0.0` + `:${port}`;
+
+const branding = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+				.setCustomId('amd')
+				.setLabel('AMD')
+				.setStyle('DANGER'),
+		).addComponents(
+			new MessageButton()
+				.setCustomId('nvidia')
+				.setLabel('NVIDIA')
+				.setStyle('SUCCESS'),
+		).addComponents(
+			new MessageButton()
+				.setURL(`http://${ipv4}`)
+				.setLabel('FULL LIST')
+				.setStyle('LINK'),
+		);
+
+		const pagination = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+				.setCustomId('left')
+				.setLabel('PAGE LEFT')
+				.setStyle('PRIMARY'),
+		).addComponents(
+			new MessageButton()
+				.setCustomId('right')
+				.setLabel('PAGE RIGHT')
+				.setStyle('PRIMARY'),
+		);
+
 module.exports =
 {
 	async execute(interaction)
 	{
-		let brand;
-
 		//let ipv4 = await publicip.v4();
-		let ipv4 = `0.0.0.0`;
-		ipv4 += `:${port}`;
 
-		if(interaction.options.getString("brand") != null)
+		const filter = interaction => interaction.customId === 'amd' || 'nvidia';
+		const collector = interaction.channel.createMessageComponentCollector({ filter, time: 10000 });
+
+		collector.on('collect', async (interaction) =>
 		{
-			brand = interaction.options.getString("brand").toLocaleLowerCase();
+			let page = 0;
+			let page_count = enumerate_page_count(interaction);
 
-			if(brand != "amd" && brand != "nvidia" && brand != "bitmain")
-			{
-				await interaction.reply({ content: `The brand you entered does not exist!`, ephemeral: true});
-			}
-		}
-		else
-		{
-			const branding = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('amd')
-					.setLabel('AMD')
-					.setStyle('DANGER'),
-			).addComponents(
-				new MessageButton()
-					.setCustomId('nvidia')
-					.setLabel('NVIDIA')
-					.setStyle('SUCCESS'),
-			).addComponents(
-				new MessageButton()
-					.setURL(`http://${ipv4}`)
-					.setLabel('FULL LIST')
-					.setStyle('LINK'),
-			);
-
-			const pagination = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('left')
-					.setLabel('PAGE LEFT')
-					.setStyle('PRIMARY'),
-			).addComponents(
-				new MessageButton()
-					.setCustomId('right')
-					.setLabel('PAGE RIGHT')
-					.setStyle('PRIMARY'),
-			);
+			let device_names = await enumerate_device_names(interaction.customId, page);
+			let codenames = await enumerate_codenames(interaction.customId, page);
 
 			let embed = new MessageEmbed()
 				.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
-				.setDescription("Device List\n**PLEASE CLICK A BRAND BELOW**")
+				.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
+				.addField("Device", device_names, true)
+				.addField("Codename", codenames, true)
 				.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
 				.setFooter("This list is manually updated and may not include every device available!");
 
-			const filter = interaction => interaction.customId === 'amd' || 'nvidia';
-			const collector = interaction.channel.createMessageComponentCollector({ filter, time: 10000 });
-
-			let page = 0;
-			let page_count = enumerate_page_count(brand);
-
-			collector.on('collect', async (interaction) =>
-			{
-				if(page_count > 1)
-				{
-
-				}
-				else
-				{
-					let device_names = await enumerate_device_names(interaction.customId, page);
-					let codenames = await enumerate_codenames(interaction.customId, page);
-
-					let embed = new MessageEmbed()
-						.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
-						.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
-						.addField("Device", device_names, true)
-						.addField("Codename", codenames, true)
-						.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
-						.setFooter("This list is manually updated and may not include every device available!");
-					await interaction.deferUpdate();
-					await interaction.editReply({ embeds:[embed], components:[pagination]});
-				}
-				return;
-			});
-
-			await interaction.reply({ embeds: [embed], components: [branding], ephemeral: true});
+			await interaction.deferUpdate();
+			await interaction.editReply({ embeds:[embed], components:[pagination]});
+			
 			return;
-		}
-
-		//Below is for non-button method
-
-		let device_names = await enumerate_device_names(brand);
-		let codenames = await enumerate_codenames(brand);
+		});
 
 		let embed = new MessageEmbed()
 			.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
-			.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
-			.addField("Device", device_names, true)
-			.addField("Codename", codenames, true)
+			.setDescription("Device List\n**PLEASE CLICK A BRAND BELOW**")
 			.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
 			.setFooter("This list is manually updated and may not include every device available!");
 
-		await interaction.reply({ embeds: [embed], ephemeral: true});
+		await interaction.reply({ embeds: [embed], components: [branding], ephemeral: true});
+		return;
 	},
 
 	data: new SlashCommandBuilder()
 		.setName('list')
 		.setDescription('Lists all devices available for lookup.')
-		.addStringOption(
-			option => option.setName("brand")
-			.setDescription("Sort by brand rather than full list (AMD / NVIDIA).")
-			.setRequired(false)
-		)
 };
