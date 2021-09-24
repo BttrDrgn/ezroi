@@ -3,14 +3,27 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const publicip = require('public-ip');
 const { port} = require('../config.json');
+const wait = require('util').promisify(setTimeout);
 
-async function enumerate_device_names(brand)
+async function enumerate_page_count(brand)
+{
+	let count = 0;
+	for(let i = 30*page; i < json.devices.length; i++)
+	{
+		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
+		count++;
+	}
+
+	return Math.ceil(count/30);
+}
+
+async function enumerate_device_names(brand, page)
 {
 	let json = JSON.parse(fs.readFileSync("./dbs/devices.json"));
 	let device_names = "";
 	let count = 0;
 
-	for(let i = 0; i < json.devices.length; i++)
+	for(let i = 30*page; i < json.devices.length; i++)
 	{
 		if(brand != null) if(!json.devices[i][2].toLocaleLowerCase().includes(brand)) continue;
 
@@ -76,14 +89,14 @@ module.exports =
 		{
 			brand = interaction.options.getString("brand").toLocaleLowerCase();
 
-			if(brand != "amd" && brand != "nvidia")
+			if(brand != "amd" && brand != "nvidia" && brand != "bitmain")
 			{
 				await interaction.reply({ content: `The brand you entered does not exist!`, ephemeral: true});
 			}
 		}
 		else
 		{
-			const first_row = new MessageActionRow()
+			const branding = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
 					.setCustomId('amd')
@@ -101,35 +114,56 @@ module.exports =
 					.setStyle('LINK'),
 			);
 
+			const pagination = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('left')
+					.setLabel('PAGE LEFT')
+					.setStyle('PRIMARY'),
+			).addComponents(
+				new MessageButton()
+					.setCustomId('right')
+					.setLabel('PAGE RIGHT')
+					.setStyle('PRIMARY'),
+			);
+
 			let embed = new MessageEmbed()
 				.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
 				.setDescription("Device List\n**PLEASE CLICK A BRAND BELOW**")
 				.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
 				.setFooter("This list is manually updated and may not include every device available!");
 
-			const filter = i => i.customId === 'amd' || 'nvidia';
-			const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+			const filter = interaction => interaction.customId === 'amd' || 'nvidia';
+			const collector = interaction.channel.createMessageComponentCollector({ filter, time: 10000 });
 
-			collector.on('collect', async (i) =>
+			let page = 0;
+			let page_count = enumerate_page_count(brand);
+
+			collector.on('collect', async (interaction) =>
 			{
-				let device_names = await enumerate_device_names(i.customId);
-				let codenames = await enumerate_codenames(i.customId);
+				if(page_count > 1)
+				{
 
-				let embed = new MessageEmbed()
-					.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
-					.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
-					.addField("Device", device_names, true)
-					.addField("Codename", codenames, true)
-					.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
-					.setFooter("This list is manually updated and may not include every device available!");
-				await i.deferUpdate();
-				await i.editReply({ embeds: [embed], component: [first_row], ephemeral: true});
+				}
+				else
+				{
+					let device_names = await enumerate_device_names(interaction.customId, page);
+					let codenames = await enumerate_codenames(interaction.customId, page);
+
+					let embed = new MessageEmbed()
+						.setAuthor("EzROI", interaction.client.user.displayAvatarURL())
+						.setDescription("Device List\n**PLEASE NOTE:** All GPUs listed are 6GB+ VRAM models unless otherwise stated.")
+						.addField("Device", device_names, true)
+						.addField("Codename", codenames, true)
+						.addField("Full List", `Click [here](http://${ipv4}) for the full list of devices in JSON format.`)
+						.setFooter("This list is manually updated and may not include every device available!");
+					await interaction.deferUpdate();
+					await interaction.editReply({ embeds:[embed], components:[pagination]});
+				}
 				return;
 			});
 
-			collector.on('end', (collected) => {});
-
-			await interaction.reply({ embeds: [embed], components: [first_row], ephemeral: true});
+			await interaction.reply({ embeds: [embed], components: [branding], ephemeral: true});
 			return;
 		}
 
