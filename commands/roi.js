@@ -16,6 +16,7 @@ module.exports =
         let codename = interaction.options.getString("codename").toLocaleLowerCase();
         let price = parseFloat(interaction.options.getString("price")).toFixed(2);
         let currency = interaction.options.getString("currency");
+        let tax = (interaction.options.getInteger("tax")+100)/100;
         let private = interaction.options.getBoolean("private");
 
         //Checks in case something gets through the discord slash command parser
@@ -23,6 +24,17 @@ module.exports =
         {
             await interaction.reply({ content: "The price that was entered is invalid!", ephemeral: true});
             return; 
+        }
+
+        if(isNaN(tax))
+        {
+            await interaction.reply({ content: "The tax percent that was entered is invalid!", ephemeral: true});
+            return; 
+        }
+
+        if(tax == 100)
+        {
+            
         }
 
         if(currency == null)
@@ -98,7 +110,7 @@ module.exports =
                                 }
                                 else
                                 {
-                                    let paying = parseFloat(temp.paying * btc).toFixed(2);
+                                    let paying = (parseFloat(temp.paying * btc).toFixed(2) * tax);
                                     let roi = parseFloat(price / paying).toFixed(1);
 
                                     let color = "";
@@ -166,7 +178,12 @@ module.exports =
 		)
         .addStringOption(
 			option => option.setName("currency")
-			.setDescription("The currency to be calculated with (default is USD)")
+			.setDescription("The currency to be calculated with (default is USD).")
+			.setRequired(false)
+		)
+        .addIntegerOption(
+			option => option.setName("tax")
+			.setDescription("The tax percentage to be calculated with.")
 			.setRequired(false)
 		)
         .addBooleanOption(
