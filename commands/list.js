@@ -116,7 +116,7 @@ module.exports =
 		//let ipv4 = await publicip.v4();
 
 		const filter = interaction => interaction.customId === 'amd' || 'nvidia';
-		const collector = interaction.channel.createMessageComponentCollector({ filter, time: 10000 });
+		const collector = interaction.channel.createMessageComponentCollector({ filter, componentType: 'BUTTON', time: 10000 });
 
 		collector.on('collect', async (interaction) =>
 		{
