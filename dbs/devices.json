@@ -181,6 +181,11 @@
             "AMD R9 390"
         ],
         [
+            "radeon7",
+            "7a0f9693-1b04-430c-a450-8267e2c89718",
+            "AMD Radeon VII"
+        ],
+        [
             "rx470",
             "e1276e68-567d-4fa6-b73f-cc4b5045dce2",
             "AMD RX 470 8GB"
@@ -279,6 +284,11 @@
             "titanxp",
             "41f10416-60f5-4e97-904f-48caf2b6b727",
             "NVIDIA TITAN XP"
+        ],
+        [
+            "vega56",
+            "6cdc832d-fe78-4c58-a2c3-905d7b81612d",
+            "AMD RX Vega 56"
         ],
         [
             "vega64",
